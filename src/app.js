@@ -1,9 +1,9 @@
 require('dotenv').config();
 
-//SPREADSHEETS CONFIG
+//Google Spreadsheets Settings
+const googleSpreadsheetFunctions = require('./helpers/googleSpeadsheetFunction');
 
-
-//SONAR API
+//SonarCloud API
 const sonarAPi = require('./helpers/sonarApi');
 
 (async () => {

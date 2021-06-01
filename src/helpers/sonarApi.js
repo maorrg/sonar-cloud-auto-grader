@@ -20,7 +20,7 @@ module.exports = {
         return metrics;
     },
     getAndParseFloatValue : function (keyName, array) {
-        const keyValue = this.find(keyName, array);
+        const keyValue = this.findJsonKey(keyName, array);
         if(keyValue != undefined){
             return parseFloat(keyValue.value);
         }
@@ -38,7 +38,7 @@ module.exports = {
             technical_debt: this.getAndParseFloatValue('sqale_index', sonarResponse),            
         }
     },
-    find : function (metricKey, array){
+    findJsonKey : function (metricKey, array){
         for (var i=0; i < array.length; i++) {
             if (array[i].metric === metricKey) {
                 return array[i];
