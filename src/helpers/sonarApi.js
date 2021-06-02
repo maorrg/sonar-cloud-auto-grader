@@ -26,6 +26,17 @@ module.exports = {
         }
         return null;
     },
+    calculateSonarFactor : function (sonarReport) {
+        return (
+            sonarReport.coverage > 85 &&
+            sonarReport.bugs == 0 &&
+            sonarReport.code_smells < 2 &&
+            sonarReport.vulnerabilities == 0 &&
+            sonarReport.security_hotspots == 0 &&
+            sonarReport.maintainability_rating == 1 &&
+            sonarReport.technical_debt <= 30
+        )
+    },
     convertMetric : function (sonarResponse) {
         return {
             coverage : this.getAndParseFloatValue('coverage', sonarResponse),
@@ -35,14 +46,21 @@ module.exports = {
             vulnerabilities : this.getAndParseFloatValue('vulnerabilities', sonarResponse),
             security_hotspots : this.getAndParseFloatValue('security_hotspots', sonarResponse),
             maintainability_rating : this.getAndParseFloatValue('sqale_rating', sonarResponse),
-            technical_debt: this.getAndParseFloatValue('sqale_index', sonarResponse),            
+            technical_debt: this.getAndParseFloatValue('sqale_index', sonarResponse)
         }
     },
-    findJsonKey : function (metricKey, array){
+    findJsonKey : function (metricKey, array) {
         for (var i=0; i < array.length; i++) {
             if (array[i].metric === metricKey) {
                 return array[i];
             }
         }
+    },
+    calculateFinalSonarReport : async function (projectKey) {
+        sonarResponse = await this.requestSonarReport(projectKey);
+        convertedMetrics = this.convertMetric(sonarResponse);
+        sonarFactor = this.calculateSonarFactor(convertedMetrics);
+        convertedMetrics['sonar_factor'] = sonarFactor ? 1 : 0;
+        return convertedMetrics;
     }
 }

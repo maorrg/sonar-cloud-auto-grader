@@ -7,7 +7,6 @@ const googleSpreadsheetFunctions = require('./helpers/googleSpeadsheetFunction')
 const sonarAPi = require('./helpers/sonarApi');
 
 (async () => {
-    const projectKey = 'org.example:lab02-pokemon-go'; 
-    const response = await sonarAPi.requestSonarReport(projectKey);
-    console.log(sonarAPi.convertMetric(response));
+    const projectKey = 'cs2901-2021-1_lab06-sec02-vaccination-eren-la-gaviota'; 
+    const response = await sonarAPi.calculateFinalSonarReport(projectKey);
 })();
